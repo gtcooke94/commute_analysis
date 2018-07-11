@@ -102,3 +102,13 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+# my keys file
+strava_keys.py
+
+# vim files
+*.un
+*.swp
+*.un~
+*.swp~

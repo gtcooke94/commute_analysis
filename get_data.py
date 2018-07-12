@@ -1,6 +1,7 @@
 from stravalib.client import Client
 from strava_keys import client_id, client_secret, access_token
-
+import csv
+import pdb
 
 client = Client()
 authorize_url = client.authorization_url(client_id=client_id,
@@ -14,7 +15,16 @@ authorize_url = client.authorization_url(client_id=client_id,
 # access_token = client.exchange_code_for_token(client_id=22120,
 # client_secret='<client_secret>', code=code)
 
-client.access_token = access_token
 activities = client.get_activities()
-for activity in activities:
-    print(activity.to_dict())
+with open('strava_data.csv', 'w') as f:
+    headers_written = False 
+    for activity in activities:
+        temp = activity.to_dict()
+        if not headers_written:
+            w = csv.DictWriter(f, temp.keys())
+            headers_written = True
+        w.writeheader()
+        w.writerow(temp)
+
+# Get datetime from string. This is for later for updating the data
+# t = datetime.strptime(str, '%Y-%m-%dT%H:%M:%S')

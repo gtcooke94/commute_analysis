@@ -17,14 +17,14 @@ authorize_url = client.authorization_url(client_id=client_id,
 
 client.access_token = access_token
 activities = client.get_activities()
+headers_written = False 
 with open('strava_data.csv', 'w') as f:
-    headers_written = False 
     for activity in activities:
         temp = activity.to_dict()
         if not headers_written:
             w = csv.DictWriter(f, temp.keys())
+            w.writeheader()
             headers_written = True
-        w.writeheader()
         w.writerow(temp)
 
 # Get datetime from string. This is for later for updating the data

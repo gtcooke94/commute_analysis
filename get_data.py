@@ -15,6 +15,7 @@ authorize_url = client.authorization_url(client_id=client_id,
 # access_token = client.exchange_code_for_token(client_id=22120,
 # client_secret='<client_secret>', code=code)
 
+client.access_token = access_token
 activities = client.get_activities()
 with open('strava_data.csv', 'w') as f:
     headers_written = False 

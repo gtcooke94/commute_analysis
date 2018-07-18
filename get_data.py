@@ -32,7 +32,7 @@ else:
 	headers_written = False 
 	with open('raw_strava_data.csv', 'w') as f:
 		for activity in activities:
-			pdb.set_trace()
+			#pdb.set_trace()
 			temp = activity.to_dict()
 			if not headers_written:
 				w = csv.DictWriter(f, temp.keys())

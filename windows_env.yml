@@ -12,5 +12,6 @@ dependencies:
     - stravalib
     - polyline
     - tables
+    - plotly
 prefix: C:\Users\gtcbh\Miniconda3\envs\commute_analysis\envs\commute_analysis
 

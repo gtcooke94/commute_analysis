@@ -29,11 +29,19 @@ if (os.path.isfile('raw_strava_data--------------.csv')):
 	stava_data.to_csv('raw_strava_data.csv')
 else:
 	activities = client.get_activities()
-	headers_written = False 
+	types = ['time', 'latlng', 'altitude', 'heartrate', 'temp']
+	headers_written = False
+	#stream_types = ['time', 'latlng', 'altitude', 'heartrate', 'temp']
+	stream_types = ['heartrate']
 	with open('raw_strava_data.csv', 'w') as f:
 		for activity in activities:
-			#pdb.set_trace()
+			streams = client.get_activity_streams(activity.id, types=stream_types, resolution='medium')
 			temp = activity.to_dict()
+			for k in types:
+				if k in streams:
+					temp[k] = streams[k].data
+				else:
+					temp[k] = None
 			if not headers_written:
 				w = csv.DictWriter(f, temp.keys())
 				w.writeheader()

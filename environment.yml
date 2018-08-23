@@ -1,0 +1,18 @@
+name: commute_analysis
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - jupyter
+  - numpy
+  - matplotlib
+  - pandas
+  - folium
+  - pip:
+    - stravalib
+    - polyline
+    - tables
+    - plotly
+    - python-dotenv
+prefix: C:\Users\gtcbh\Miniconda3\envs\commute_analysis\envs\commute_analysis
+

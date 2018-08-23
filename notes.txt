@@ -1,3 +1,0 @@
-%notebook -e history.ipynb
-
-https://blog.godatadriven.com/write-less-terrible-notebook-code

@@ -9,6 +9,7 @@ import csv
 import pdb
 import os.path
 import pandas as pd
+import ast
 
 
 
@@ -74,6 +75,43 @@ def get_data():
 
     # Get datetime from string. This is for later for updating the data
     # t = datetime.strptime(str, '%Y-%m-%dT%H:%M:%S')
+
+def convert_data():
+    ## Convert csv to h5 and store
+    # h5 reference: https://realpython.com/fast-flexible-pandas/#selecting-data-with-isin
+
+    strava_data = pd.read_csv(os.path.join('..', 'data', 'raw', 'raw_strava_data.csv'))
+    drive_morning = pd.read_csv(os.path.join('..', 'data', 'raw', 'morning_commute.csv'))
+    drive_evening = pd.read_csv(os.path.join('..', 'data', 'raw', 'evening_commute.csv'))
+    # Convert time to usable things
+    strava_data['elapsed_time'] = pd.to_timedelta(strava_data['elapsed_time'])
+
+    strava_data['moving_time'] = pd.to_timedelta(strava_data['moving_time'])
+
+    strava_data['start_date_local'] = pd.to_datetime(strava_data['start_date_local'])
+
+    drive_evening['elapsed_time'] = pd.to_timedelta("00:" + drive_evening['Duration'])
+    drive_morning['elapsted_time'] = pd.to_timedelta("00:" + drive_morning['Duration'])
+
+    drive_morning['start_date_local'] = pd.to_datetime(drive_morning['Date'] + " " + drive_morning["Leave Time"], format="%Y-%m-%d %I:%M")
+    drive_evening['start_date_local'] = pd.to_datetime(drive_evening['Date'] + " " + drive_evening["Leave Time"], format="%Y-%m-%d %I:%M:%S %p")
+
+
+    # Convert defaults meters to miles
+    strava_data['distance'] = strava_data['distance'] * 0.000621371
+
+    # The map dictionary is a string coming from the csv
+    strava_data["map"] = strava_data['map'].apply(ast.literal_eval)
+
+    # Create storage object with filename `processed_data`
+    data_store = pd.HDFStore(os.path.join('..', 'data', 'processed', 'strava_data.h5'))
+
+    # Put DataFrame into the object setting the key as 'preprocessed_df'
+    data_store['strava_data'] = strava_data
+    data_store['drive_morning'] = drive_morning
+    data_store['drive_evening'] = drive_evening
+    data_store.close()
+ 
 
 def load_data():
     # Access data store

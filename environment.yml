@@ -8,11 +8,13 @@ dependencies:
   - matplotlib
   - pandas
   - folium
+  - scipy
   - pip:
     - stravalib
     - polyline
     - tables
     - plotly
     - python-dotenv
+    - fastdtw
 prefix: C:\Users\gtcbh\Miniconda3\envs\commute_analysis\envs\commute_analysis
 

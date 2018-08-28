@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import click
-import logging
+import click import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 
@@ -103,6 +102,8 @@ def convert_data():
     # The map dictionary is a string coming from the csv
     strava_data["map"] = strava_data['map'].apply(ast.literal_eval)
 
+    strava_data = add_start_end_latlng(strava_data)
+
     # Create storage object with filename `processed_data`
     data_store = pd.HDFStore(os.path.join('..', 'data', 'processed', 'strava_data.h5'))
 
@@ -124,3 +125,19 @@ def load_data():
     strava_data_h5.close()
     return (strava_data, drive_morning, drive_evening)
 
+def get_start_latlng(mp):
+    pl = mp['summary_polyline']
+    if pl:
+        return(polyline.decode(pl)[0])
+
+def get_end_latlng(mp):
+    pl = mp['summary_polyline']
+    if pl:
+        return(polyline.decode(pl)[-1])
+
+def add_start_end_latlng(strava_data):
+    strava_data['start_latlng'] = strava_data['map'].apply(get_start_latlng)
+    strava_data['end_latlng'] = strava_data['map'].apply(get_end_latlng)
+    strava_data[['start_lat', 'start_lng']] = strava_data['start_latlng'].apply(pd.Series)
+    strava_data[['end_lat', 'end_lng']] = strava_data['end_latlng'].apply(pd.Series)
+    return strava_data

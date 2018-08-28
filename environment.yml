@@ -9,6 +9,7 @@ dependencies:
   - pandas
   - folium
   - scipy
+  - scikit-learn
   - pip:
     - stravalib
     - polyline

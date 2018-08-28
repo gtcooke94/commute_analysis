@@ -17,5 +17,6 @@ dependencies:
     - plotly
     - python-dotenv
     - fastdtw
+    - networkx
 prefix: C:\Users\gtcbh\Miniconda3\envs\commute_analysis\envs\commute_analysis
 

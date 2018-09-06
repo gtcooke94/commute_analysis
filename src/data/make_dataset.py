@@ -2,6 +2,7 @@
 #import click import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+import polyline
 
 from stravalib.client import Client
 import csv
@@ -90,7 +91,7 @@ def convert_data():
     strava_data['start_date_local'] = pd.to_datetime(strava_data['start_date_local'])
 
     drive_evening['elapsed_time'] = pd.to_timedelta("00:" + drive_evening['Duration'])
-    drive_morning['elapsted_time'] = pd.to_timedelta("00:" + drive_morning['Duration'])
+    drive_morning['elapsed_time'] = pd.to_timedelta("00:" + drive_morning['Duration'])
 
     drive_morning['start_date_local'] = pd.to_datetime(drive_morning['Date'] + " " + drive_morning["Leave Time"], format="%Y-%m-%d %I:%M")
     drive_evening['start_date_local'] = pd.to_datetime(drive_evening['Date'] + " " + drive_evening["Leave Time"], format="%Y-%m-%d %I:%M:%S %p")

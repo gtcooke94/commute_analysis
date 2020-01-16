@@ -21,3 +21,4 @@ tables
 plotly
 fastdtw
 networkx
+pytesseract

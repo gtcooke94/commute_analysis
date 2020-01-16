@@ -3,6 +3,14 @@ commute_analysis
 
 Analyzing the difference between my car and bike commutes
 
+Requires Tesseract
+```
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+```
+
+
+
 Project Organization
 ------------
 

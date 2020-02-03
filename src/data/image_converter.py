@@ -75,4 +75,4 @@ def clean_time_csv():
 
 if __name__ == "__main__":
     #  read_times_from_images()
-    clean_time_csv()
+    #  clean_time_csv()

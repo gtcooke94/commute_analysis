@@ -100,7 +100,7 @@ def convert_strava_data():
     data_store['strava_data'] = strava_data
     data_store.close()
 
-def convert_data():
+def convert_data2018():
     ## Convert csv to h5 and store
     # h5 reference: https://realpython.com/fast-flexible-pandas/#selecting-data-with-isin
 
@@ -117,8 +117,27 @@ def convert_data():
 
 
     # Put DataFrame into the object setting the key as 'preprocessed_df'
+    data_store = pd.HDFStore(os.path.join(BASE_PATH, 'data', 'processed', 'strava_data.h5'))
     data_store['drive_morning'] = drive_morning
     data_store['drive_evening'] = drive_evening
+    data_store.close()
+ 
+def convert_data():
+    ## Convert csv to h5 and store
+    # h5 reference: https://realpython.com/fast-flexible-pandas/#selecting-data-with-isin
+
+    #  drive_morning = pd.read_csv(os.path.join(BASE_PATH, 'data', 'raw', 'morning_commute.csv'))
+    #  drive_evening = pd.read_csv(os.path.join(BASE_PATH, 'data', 'raw', 'evening_commute.csv'))
+    drives = pd.read_csv(os.path.join(BASE_PATH, "data", "processed", "drives.csv"))
+    # Convert time to usable things
+
+    drives["elapsed_time"] = drives["elapsed_time"].apply(pd.to_timedelta)
+    drives["start_date_local"] = drives["start_date_local"].apply(pd.to_datetime)
+
+    # Put DataFrame into the object setting the key as 'preprocessed_df'
+    data_store = pd.HDFStore(os.path.join(BASE_PATH, 'data', 'processed', 'strava_data.h5'))
+    data_store['drives'] = drives
+    data_store.close()
  
 
 def load_strava_data():
@@ -136,10 +155,9 @@ def load_data():
 
     # Retrieve data using key
     strava_data = strava_data_h5['strava_data']
-    drive_morning = strava_data_h5['drive_morning']
-    drive_evening = strava_data_h5['drive_evening']
+    drives = strava_data_h5['drives']
     strava_data_h5.close()
-    return (strava_data, drive_morning, drive_evening)
+    return (strava_data, drives)
 
 def get_start_latlng(mp):
     pl = mp['summary_polyline']
